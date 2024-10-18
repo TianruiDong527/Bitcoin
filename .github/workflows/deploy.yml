@@ -6,20 +6,20 @@ permissions:
 
 jobs:
   npm-build:
-  name: npm-build work
+    name: npm-build work
     runs-on: ubuntu-latest
     
     steps:
     - name: read repo content
-    - uses: actions/checkout@v4
+      uses: actions/checkout@v4
 
     - name: install and package 📦
-    - run: |
+      run: |
         npm install
         npm run build
 
-    - name: deploy 🚀
-      uses： JamesIves/github-pages-deploy-action@v4
+    - name: deploy  🚀
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages
         folder: build
