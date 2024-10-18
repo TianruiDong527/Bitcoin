@@ -1,0 +1,80 @@
+/* App.css */
+.app-container {
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.dashboard-columns {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.column {
+  flex: 1;
+  min-width: 300px;
+  max-width: 45%;
+  margin: 10px;
+  box-sizing: border-box;
+}
+
+.block-height,
+.block-info,
+.btc-metrics,
+.fear-greed-index,
+.chart-container {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1.2em;
+  color: #555;
+}
+
+.block-info p {
+  word-wrap: break-word; /* 或者使用 overflow-wrap: break-word; */
+}
+
+/* Ensure same width for Fear and Greed Index and Bitcoin Price Chart */
+.fear-greed-index,
+.chart-container {
+  width: 100%; /* Make sure both containers occupy full column width */
+}
+
+.progress-bar {
+  margin-top: 10px;
+}
+
+progress {
+  width: 100%;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #f3f3f3;
+}
+
+progress[value]::-webkit-progress-bar {
+  background-color: #f3f3f3;
+}
+
+progress[value]::-webkit-progress-value {
+  background-color: #4caf50; /* 绿色进度条 */
+}
