@@ -134,14 +134,15 @@ function App() {
     }
   };
 
-  // Use `useEffect` to fetch data on component mount and auto-refresh
-  useEffect(() => {
-    fetchLatestData(); // Initial fetch
-    const intervalId = setInterval(fetchLatestData, 60000); // Refresh every 60 seconds
+// Use `useEffect` to fetch data on component mount and auto-refresh
+useEffect(() => {
+  fetchLatestData(); // Initial fetch
+  const intervalId = setInterval(fetchLatestData, 60000); // Refresh every 60 seconds
 
-    // Cleanup: Clear interval when the component unmounts
-    return () => clearInterval(intervalId);
-  }, []);
+  // Cleanup: Clear interval when the component unmounts
+  return () => clearInterval(intervalId);
+}, [fetchLatestData]);
+
 
   return (
     <div className="app-container">
