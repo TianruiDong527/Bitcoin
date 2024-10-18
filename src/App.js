@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import './App.css';
@@ -15,24 +15,12 @@ function App() {
   const [fearGreedIndex, setFearGreedIndex] = useState(null);  // Fear and Greed Index
   const [error, setError] = useState('');
 
-  const fetchLatestData = async () => {
-    try {
-      await fetchLatestBlockInfo();
-      await fetchBtcMetrics();
-      await fetchPriceData();
-      await fetchFearGreedIndex();
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  // Fetch latest Bitcoin block info (on-chain data from Blockchair API)
-  const fetchLatestBlockInfo = async () => {
+  const fetchLatestBlockInfo = useCallback(async () => {
     try {
       const response = await fetch('https://api.blockchair.com/bitcoin/blocks?limit=1');
       if (!response.ok) throw new Error('Failed to fetch latest block info');
       const data = await response.json();
-      
+
       const latestBlock = data.data[0];
       if (latestBlock) {
         setBlockHeight(latestBlock.id);
@@ -48,10 +36,9 @@ function App() {
     } catch (err) {
       setError(err.message);
     }
-  };
+  }, [setBlockHeight, setBlockInfo, setError]);
 
-  // Fetch Bitcoin price and other off-chain data (from CoinGecko)
-  const fetchBtcMetrics = async () => {
+  const fetchBtcMetrics = useCallback(async () => {
     try {
       const response = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin?localization=false');
       if (!response.ok) throw new Error('Failed to fetch Bitcoin metrics');
@@ -67,10 +54,9 @@ function App() {
     } catch (err) {
       setError(err.message);
     }
-  };
+  }, [setBtcPrice, setBtcMetrics, setError]);
 
-  // Fetch Bitcoin price data for the past 2 days from CoinGecko
-  const fetchPriceData = async () => {
+  const fetchPriceData = useCallback(async () => {
     try {
       const response = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=2');
       if (!response.ok) throw new Error('Failed to fetch price data');
@@ -98,10 +84,9 @@ function App() {
     } catch (err) {
       setError(err.message);
     }
-  };
+  }, [setPriceData, setError]);
 
-  // Fetch the Fear and Greed Index from Alternative.me
-  const fetchFearGreedIndex = async () => {
+  const fetchFearGreedIndex = useCallback(async () => {
     try {
       const response = await fetch('https://api.alternative.me/fng/?limit=1');
       if (!response.ok) throw new Error('Failed to fetch Fear and Greed Index');
@@ -114,7 +99,16 @@ function App() {
     } catch (err) {
       setError(err.message);
     }
-  };
+  }, [setFearGreedIndex, setError]);
+
+  const fetchLatestData = useCallback(async () => {
+    await Promise.all([
+      fetchLatestBlockInfo(),
+      fetchBtcMetrics(),
+      fetchPriceData(),
+      fetchFearGreedIndex()
+    ]);
+  }, [fetchLatestBlockInfo, fetchBtcMetrics, fetchPriceData, fetchFearGreedIndex]);
 
   // Map Fear and Greed Index classification to corresponding emoji
   const getEmojiForClassification = (classification) => {
@@ -134,15 +128,15 @@ function App() {
     }
   };
 
-// Use `useEffect` to fetch data on component mount and auto-refresh
-useEffect(() => {
-  fetchLatestData(); // Initial fetch
-  const intervalId = setInterval(fetchLatestData, 60000); // Refresh every 60 seconds
+  useEffect(() => {
+    fetchLatestData(); // Initial fetch
+    const intervalId = setInterval(fetchLatestData, 60000); // Refresh every 60 seconds
 
-  // Cleanup: Clear interval when the component unmounts
-  return () => clearInterval(intervalId);
-}, [fetchLatestData]);
-
+    // Cleanup: Clear interval when the component unmounts
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [fetchLatestData]);
 
   return (
     <div className="app-container">
