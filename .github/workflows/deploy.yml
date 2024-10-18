@@ -1,16 +1,11 @@
-name: 打包react项目
-
 on: push
 
 jobs:
-  job1:
-    runs-on: ubuntu_latest
+  npm-build:
+    runs-on: ubuntu-latest
     steps:
-    - run: pwd
-    - run: ls
-  job2:
-    runs-on: windows-latest
-    steps:
-    - run: node --version
+    - uses: actions/checkout@v4
+    - run: npm install
+    - run: npm run build
 
     
