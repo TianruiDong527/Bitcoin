@@ -1,13 +1,27 @@
 name: packaging react project v2
-
 on: push
+
+permissions:
+  contents: write
 
 jobs:
   npm-build:
+  name: npm-build work
     runs-on: ubuntu-latest
+    
     steps:
+    - name: read repo content
     - uses: actions/checkout@v4
-    - run: npm install
-    - run: npm run build
+
+    - name: install and package 📦
+    - run: |
+        npm install
+        npm run build
+
+    - name: deploy 🚀
+      uses： JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages
+        folder: build
 
     
