@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Bitcoin/static/css/main.bee306ad.css",
+    "main.js": "/Bitcoin/static/js/main.adff6f02.js",
+    "static/js/453.bef515ed.chunk.js": "/Bitcoin/static/js/453.bef515ed.chunk.js",
+    "index.html": "/Bitcoin/index.html",
+    "main.bee306ad.css.map": "/Bitcoin/static/css/main.bee306ad.css.map",
+    "main.adff6f02.js.map": "/Bitcoin/static/js/main.adff6f02.js.map",
+    "453.bef515ed.chunk.js.map": "/Bitcoin/static/js/453.bef515ed.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bee306ad.css",
+    "static/js/main.adff6f02.js"
+  ]
+}
